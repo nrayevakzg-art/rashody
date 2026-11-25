@@ -12,6 +12,10 @@ p { margin: 0; }
 .card { background: #fff; border: 1px solid #dce3dc; border-radius: 20px; padding: 26px; margin-top: 20px; }
 .form-grid, .period-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
 .budget-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.budget-overview { background: #edf4ee; border-radius: 12px; padding: 16px; margin: 16px 0 20px; }
+.budget-overview p { overflow-wrap: anywhere; line-height: 1.5; }
+.budget-overview p + p { margin-top: 6px; }
+#budget-total, #budget-remaining { font-weight: 600; }
 .budget-category { min-width: 0; border-top: 1px solid #e5eae5; padding-top: 18px; }
 .budget-category h3 { font-size: 17px; margin: 0 0 10px; }
 .budget-category p { overflow-wrap: anywhere; }

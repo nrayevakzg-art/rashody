@@ -18,6 +18,13 @@
     <section class="card" aria-labelledby="budget-title">
       <h2 id="budget-title">Бюджет на месяц · <span id="budget-month"></span></h2>
       <p id="budget-storage-status" class="error" role="status"></p>
+      <div class="budget-overview" aria-label="Общий бюджет месяца">
+        <p id="budget-total">Бюджет не задан</p>
+        <p id="budget-spent">Всего потрачено: 0 ₸</p>
+        <p id="budget-remaining">Остаток не рассчитан</p>
+        <p id="budget-completeness" class="muted" hidden></p>
+        <p id="budget-warning" class="error" role="status" hidden></p>
+      </div>
       <div id="budget-categories" class="budget-grid"></div>
     </section>
     <section class="card" aria-labelledby="form-title">

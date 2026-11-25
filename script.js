@@ -147,6 +147,7 @@ function updateBudgetAmounts() {
       totals.set(item.category, totals.get(item.category) + BigInt(item.amount));
     }
   });
+  updateBudgetSummary(totals);
   budgetRows.forEach(({ category, spentLabel, remainingLabel, warning }) => {
     const spent = totals.get(category);
     const limit = budgets[budgetMonth]?.[category];
@@ -164,6 +165,30 @@ function updateBudgetAmounts() {
       warning.hidden = false;
     }
   });
+}
+
+function updateBudgetSummary(totals) {
+  const limits = categories.map((category) => budgets[budgetMonth]?.[category]).filter((limit) => limit !== undefined);
+  const total = limits.reduce((sum, limit) => sum + BigInt(limit), 0n);
+  const spent = [...totals.values()].reduce((sum, amount) => sum + amount, 0n);
+  get('budget-total').textContent = budgetReadFailed ? 'Бюджет недоступен' : limits.length ? `Общий бюджет: ${money(total)}` : 'Бюджет не задан';
+  get('budget-spent').textContent = expensesReadFailed ? 'Расходы недоступны' : `Всего потрачено: ${money(spent)}`;
+  const incomplete = !budgetReadFailed && limits.length > 0 && limits.length < categories.length;
+  get('budget-completeness').hidden = !incomplete;
+  get('budget-completeness').textContent = incomplete ? `Заданы лимиты: ${limits.length} из ${categories.length}. Бюджет неполный` : '';
+  const warning = get('budget-warning');
+  warning.hidden = true;
+  warning.textContent = '';
+  if (budgetReadFailed || expensesReadFailed || limits.length === 0) {
+    get('budget-remaining').textContent = 'Остаток не рассчитан';
+    return;
+  }
+  const remaining = total - spent;
+  get('budget-remaining').textContent = `Общий остаток: ${money(remaining)}`;
+  if (remaining < 0n) {
+    warning.hidden = false;
+    warning.textContent = `Перерасход: ${money(-remaining)}`;
+  }
 }
 
 function loadExpenses() {

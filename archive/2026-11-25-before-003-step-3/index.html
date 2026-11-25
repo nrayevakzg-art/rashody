@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Мои расходы</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main>
+    <header><p class="eyebrow">Личный учёт</p><h1>Мои расходы</h1></header>
+    <section class="summary" aria-label="Итог за текущий месяц">
+      <p>За текущий месяц · <span id="month-label"></span></p>
+      <strong id="month-total">0 ₸</strong>
+    </section>
+    <section class="card" aria-labelledby="budget-title">
+      <h2 id="budget-title">Бюджет на месяц · <span id="budget-month"></span></h2>
+      <p id="budget-storage-status" class="error" role="status"></p>
+      <div id="budget-categories" class="budget-grid"></div>
+    </section>
+    <section class="card" aria-labelledby="form-title">
+      <h2 id="form-title">Добавить трату</h2>
+      <form id="expense-form" novalidate>
+        <div class="form-grid">
+          <div><label for="amount">Сумма, ₸</label><input id="amount" name="amount" type="text" inputmode="numeric" placeholder="Например, 5 000" required aria-describedby="amount-error"><p class="error" id="amount-error"></p></div>
+          <div><label for="category">Категория</label><select id="category" name="category" required><option>Еда</option><option>Транспорт</option><option>Дом</option><option>покупки</option></select></div>
+          <div><label for="necessity">Обязательность</label><select id="necessity" name="necessity" required aria-describedby="necessity-error"><option value="">Выбери</option><option value="required">Обязательная</option><option value="optional">Необязательная</option></select><p class="error" id="necessity-error" role="status"></p></div>
+          <div><label for="regularity">Регулярность</label><select id="regularity" name="regularity" required aria-describedby="regularity-error"><option value="">Выбери</option><option value="regular">Регулярная</option><option value="irregular">Нерегулярная</option></select><p class="error" id="regularity-error" role="status"></p></div>
+          <div><label for="date">Дата</label><input id="date" name="date" type="date" required aria-describedby="date-error"><p class="error" id="date-error"></p></div>
+          <div><label for="comment">Комментарий <span class="muted">· необязательно</span></label><input id="comment" name="comment" type="text" placeholder="На что потратил"></div>
+        </div>
+        <button class="primary" type="submit">Добавить</button>
+        <p id="form-status" role="status"></p>
+      </form>
+    </section>
+    <section class="card" aria-labelledby="list-title">
+      <div class="section-heading"><h2 id="list-title">Траты</h2><span class="muted" id="count"></span></div>
+      <div class="period-fields">
+        <div><label for="period-from">Период с</label><input id="period-from" type="date" aria-describedby="period-error"></div>
+        <div><label for="period-to">По</label><input id="period-to" type="date" aria-describedby="period-error"></div>
+      </div>
+      <div class="presets" role="group" aria-label="Период списка">
+        <button type="button" data-period="all" aria-pressed="true">Все</button>
+        <button type="button" data-period="today" aria-pressed="false">Сегодня</button>
+        <button type="button" data-period="yesterday" aria-pressed="false">Вчера</button>
+        <button type="button" data-period="week" aria-pressed="false">7 дней</button>
+        <button type="button" data-period="days30" aria-pressed="false">30 дней</button>
+        <button type="button" data-period="month" aria-pressed="false">Текущий месяц</button>
+        <button type="button" data-period="previous" aria-pressed="false">Прошлый месяц</button>
+      </div>
+      <p id="period-error" class="error" role="status"></p>
+      <p id="storage-status" class="error" role="status"></p>
+      <p id="empty" class="empty">Пока нет трат</p>
+      <ul id="expense-list" aria-label="Список трат"></ul>
+    </section>
+  </main>
+</body>
+</html>
