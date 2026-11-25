@@ -1,0 +1,47 @@
+:root { font-family: system-ui, -apple-system, sans-serif; color: #192d28; background: #f3f5f2; color-scheme: light; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 800px; margin: 0 auto; padding: 40px 20px 64px; }
+h1 { font-size: clamp(28px, 5vw, 36px); margin: 0 0 24px; letter-spacing: -.035em; }
+h2 { font-size: 20px; margin: 0 0 22px; }
+p { margin: 0; }
+.eyebrow { color: #526a60; margin-bottom: 6px; font-size: 14px; }
+.summary { background: #214e40; color: #fff; border-radius: 20px; padding: 26px; margin-bottom: 20px; }
+.summary p { color: #d5e5dc; font-size: 14px; }
+.summary strong { display: block; font-size: clamp(28px, 7vw, 42px); margin-top: 12px; overflow-wrap: anywhere; }
+.card { background: #fff; border: 1px solid #dce3dc; border-radius: 20px; padding: 26px; margin-top: 20px; }
+.form-grid, .period-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+label { display: block; font-size: 14px; margin-bottom: 8px; font-weight: 600; }
+input, select, button { min-height: 46px; font: inherit; border-radius: 10px; }
+input, select { display: block; width: 100%; min-width: 0; border: 1px solid #adbeb3; background: #fff; color: #192d28; padding: 10px 12px; }
+input[type="date"] { appearance: none; }
+button { cursor: pointer; padding: 10px 15px; border: 1px solid #cbd7ce; color: #294d3c; background: #fff; }
+button:hover { background: #edf4ee; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #90b8a3; outline-offset: 3px; }
+input[aria-invalid="true"] { border-color: #b33326; }
+.primary { background: #275b46; border-color: #275b46; color: white; margin-top: 22px; width: 100%; font-weight: 600; }
+.primary:hover { background: #1d4937; }
+.muted { color: #607268; font-weight: 400; font-size: 13px; }
+.error { color: #ad3024; font-size: 14px; line-height: 1.5; }
+.error:not(:empty), #form-status:not(:empty) { margin-top: 10px; }
+#form-status { font-size: 14px; color: #275b46; }
+.section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.presets { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.presets button { font-size: 13px; }
+.presets button[aria-pressed="true"] { background: #e5f0e8; border-color: #4a7c60; color: #1d4937; }
+.empty { text-align: center; color: #607268; padding: 36px 0 16px; }
+ul { list-style: none; padding: 0; margin: 20px 0 0; }
+.expense { border-top: 1px solid #e5eae5; padding: 18px 0; }
+.expense:last-child { padding-bottom: 0; }
+.expense-top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.expense-amount { text-align: right; overflow-wrap: anywhere; min-width: 0; }
+.expense-meta { color: #607268; font-size: 13px; margin-top: 6px; }
+.expense-comment { margin-top: 10px; overflow-wrap: anywhere; white-space: pre-wrap; line-height: 1.5; }
+[hidden] { display: none !important; }
+@media (max-width: 540px) {
+  main { padding: 24px 16px 40px; }
+  .card, .summary { padding: 20px; border-radius: 16px; }
+  .form-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .period-fields { gap: 10px; }
+  .period-fields input { padding: 10px 6px; font-size: 14px; }
+}

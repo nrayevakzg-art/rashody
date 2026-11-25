@@ -11,6 +11,14 @@ p { margin: 0; }
 .summary strong { display: block; font-size: clamp(28px, 7vw, 42px); margin-top: 12px; overflow-wrap: anywhere; }
 .card { background: #fff; border: 1px solid #dce3dc; border-radius: 20px; padding: 26px; margin-top: 20px; }
 .form-grid, .period-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.budget-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.budget-category { min-width: 0; border-top: 1px solid #e5eae5; padding-top: 18px; }
+.budget-category h3 { font-size: 17px; margin: 0 0 10px; }
+.budget-category p { overflow-wrap: anywhere; }
+.budget-category label { margin-top: 14px; }
+.budget-category button { margin-top: 10px; width: 100%; }
+.budget-message { margin-top: 10px; font-size: 14px; }
+button:disabled { cursor: default; opacity: .6; }
 label { display: block; font-size: 14px; margin-bottom: 8px; font-weight: 600; }
 input, select, button { min-height: 46px; font: inherit; border-radius: 10px; }
 input, select { display: block; width: 100%; min-width: 0; border: 1px solid #adbeb3; background: #fff; color: #192d28; padding: 10px 12px; }
@@ -41,7 +49,7 @@ ul { list-style: none; padding: 0; margin: 20px 0 0; }
 @media (max-width: 540px) {
   main { padding: 24px 16px 40px; }
   .card, .summary { padding: 20px; border-radius: 16px; }
-  .form-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .form-grid, .budget-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .period-fields { gap: 10px; }
   .period-fields input { padding: 10px 6px; font-size: 14px; }
 }
