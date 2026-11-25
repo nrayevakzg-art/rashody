@@ -19,6 +19,8 @@ let activePeriod = 'all';
 let budgets = {};
 let budgetMonth = '';
 let budgetReadFailed = false;
+let expensesReadFailed = false;
+let budgetRows = [];
 
 function localDate(date = new Date()) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -67,6 +69,7 @@ function renderBudgets() {
   get('budget-month').textContent = new Date().toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' });
   const container = get('budget-categories');
   container.replaceChildren();
+  budgetRows = [];
   categories.forEach((category, index) => {
     const limitForm = document.createElement('form');
     limitForm.className = 'budget-category';
@@ -76,6 +79,12 @@ function renderBudgets() {
     const savedLimit = budgets[month]?.[category];
     const savedLabel = document.createElement('p');
     savedLabel.textContent = budgetReadFailed ? 'Лимит недоступен' : savedLimit === undefined ? 'Лимит не задан' : `Лимит: ${money(savedLimit)}`;
+    const spentLabel = document.createElement('p');
+    const remainingLabel = document.createElement('p');
+    const warning = document.createElement('p');
+    warning.className = 'budget-message error';
+    warning.setAttribute('role', 'status');
+    budgetRows.push({ category, spentLabel, remainingLabel, warning });
     const label = document.createElement('label');
     label.htmlFor = `budget-limit-${index}`;
     label.textContent = `Лимит, ₸ · ${category}`;
@@ -95,7 +104,7 @@ function renderBudgets() {
     button.type = 'submit';
     button.textContent = 'Сохранить';
     button.disabled = budgetReadFailed;
-    limitForm.append(title, savedLabel, label, input, button, message);
+    limitForm.append(title, savedLabel, spentLabel, remainingLabel, warning, label, input, button, message);
     limitForm.addEventListener('submit', (event) => {
       event.preventDefault();
       if (budgetReadFailed) return;
@@ -122,11 +131,38 @@ function renderBudgets() {
       }
       budgets = next;
       savedLabel.textContent = `Лимит: ${money(amount)}`;
+      updateBudgetAmounts();
       message.className = 'budget-message';
       message.textContent = 'Лимит сохранён.';
       get('budget-storage-status').textContent = '';
     });
     container.append(limitForm);
+  });
+}
+
+function updateBudgetAmounts() {
+  const totals = new Map(categories.map((category) => [category, 0n]));
+  expenses.forEach((item) => {
+    if (item.date.slice(0, 7) === budgetMonth) {
+      totals.set(item.category, totals.get(item.category) + BigInt(item.amount));
+    }
+  });
+  budgetRows.forEach(({ category, spentLabel, remainingLabel, warning }) => {
+    const spent = totals.get(category);
+    const limit = budgets[budgetMonth]?.[category];
+    spentLabel.textContent = expensesReadFailed ? 'Расходы недоступны' : `Потрачено: ${money(spent)}`;
+    warning.textContent = '';
+    warning.hidden = true;
+    if (expensesReadFailed || budgetReadFailed || limit === undefined) {
+      remainingLabel.textContent = 'Остаток не рассчитан';
+      return;
+    }
+    const remaining = BigInt(limit) - spent;
+    remainingLabel.textContent = `Осталось: ${money(remaining)}`;
+    if (remaining < 0n) {
+      warning.textContent = `Перерасход: ${money(-remaining)}`;
+      warning.hidden = false;
+    }
   });
 }
 
@@ -142,6 +178,7 @@ function loadExpenses() {
     }
     expenses = parsed;
   } catch {
+    expensesReadFailed = true;
     get('storage-status').textContent = 'Не удалось прочитать сохранённые траты. Данные не перезаписаны. Проверь доступ к хранилищу и обнови страницу.';
     form.querySelector('button[type="submit"]').disabled = true;
   }
@@ -169,6 +206,7 @@ function setPeriod(period) {
 
 function render() {
   renderBudgets();
+  updateBudgetAmounts();
   const today = localDate();
   get('month-label').textContent = new Date().toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' });
   const total = expenses.filter((item) => item.date.slice(0, 7) === today.slice(0, 7)).reduce((sum, item) => sum + BigInt(item.amount), 0n);
